@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Booking Confirmation</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f9;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      width: 90%;
+      max-width: 800px;
+      margin: 50px auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    h1 {
+      text-align: center;
+      margin-top: 20px;
+      color: #333;
+    }
+    p {
+      text-align: center;
+      font-size: 1.2em;
+      color: #555;
+    }
+    .thank-you-message {
+      color: #27ae60;
+      font-size: 1.5em;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Booking Confirmed!</h1>
+    <p class="thank-you-message">Thank you, <%= customerName %>! Your booking has been successfully received. We will get back to you soon with the booking details for your hotel.</p>
+    <p>If you need any further assistance, feel free to contact us.</p>
+  </div>
+</body>
+</html>
