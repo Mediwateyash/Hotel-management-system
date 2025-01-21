@@ -41,4 +41,5 @@ app.post('/book', async (req, res) => {
   }
 });
 
-module.exports = app;
+
+module.exports = serverless(app);
