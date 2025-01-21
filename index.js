@@ -60,17 +60,17 @@ app.post('/book', async (req, res) => {
 app.get('/', (req, res) => {
   res.render('home'); // Render the home.ejs template
 });
-
-// Route for fetching and displaying hotels
 app.get('/hotels', async (req, res) => {
   try {
-    const hotels = await Hotel.find(); // Fetch all hotels from the database
-    res.render('hotelList', { hotels }); // Pass hotel data to the EJS template
+    const hotels = await Hotel.find().limit(50).lean(); // Limit results and use lean() for faster reads
+    res.render('hotelList', { hotels });
   } catch (error) {
-    console.error('Could not retrieve hotels:', error);
-    res.status(500).send('Internal Server Error');
+    console.error('Error fetching hotels:', error.message);
+    res.status(500).send('Failed to load hotels');
   }
 });
+
+app.use('/favicon.ico', (req, res) => res.sendStatus(204));
 
 // Route for adding a new hotel
 app.post('/add-hotel', async (req, res) => {
