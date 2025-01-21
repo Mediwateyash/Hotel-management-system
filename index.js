@@ -7,7 +7,7 @@ const Booking = require('./models/booking');
 
 const app = express();
 
-// Connect to MongoDB
+// Connect to MongoDB atlas
 mongoose.connect(process.env.MONGODB_URI)
   .then(() => console.log('Connected to MongoDB Atlas'))
   .catch(err => console.error('MongoDB Connection Error:', err.message));
