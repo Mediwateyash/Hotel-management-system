@@ -7,16 +7,13 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 // Import models
-const Hotel = require('./database.js');
+const Hotel = require('./database.js'); // Ensure this path is correct
 const Booking = require('./models/booking.js'); // Correct path to your booking model
 
 const app = express();
 
 // Connect to MongoDB Atlas
-mongoose.connect(process.env.MONGODB_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-})
+mongoose.connect(process.env.MONGODB_URI)
   .then(() => {
     console.log('Connected to MongoDB Atlas');
   })
@@ -60,9 +57,11 @@ app.post('/book', async (req, res) => {
 app.get('/', (req, res) => {
   res.render('home'); // Render the home.ejs template
 });
+
+// Route for fetching and displaying hotels
 app.get('/hotels', async (req, res) => {
   try {
-    const hotels = await Hotel.find().limit(50).lean(); // Limit results and use lean() for faster reads
+    const hotels = await Hotel.find().limit(50).lean(); // Use lean() for better performance with read-only data
     res.render('hotelList', { hotels });
   } catch (error) {
     console.error('Error fetching hotels:', error.message);
@@ -70,14 +69,11 @@ app.get('/hotels', async (req, res) => {
   }
 });
 
-app.use('/favicon.ico', (req, res) => res.sendStatus(204));
-
 // Route for adding a new hotel
 app.post('/add-hotel', async (req, res) => {
   const { hotel_name, price, types, description, image } = req.body;
 
   try {
-    // Create a new hotel document using the existing schema
     const newHotel = new Hotel({
       hotel_name,
       price,
@@ -86,11 +82,9 @@ app.post('/add-hotel', async (req, res) => {
       image,
     });
 
-    // Save the new hotel to the database
     await newHotel.save();
-
+    res.status(201).json({ message: 'Hotel added successfully!' });
   } catch (error) {
-    // Handle any errors
     console.error('Error adding hotel:', error);
     res.status(500).json({
       message: 'Failed to add hotel.',
@@ -99,8 +93,11 @@ app.post('/add-hotel', async (req, res) => {
   }
 });
 
+// Favicon route to avoid unnecessary logs
+app.use('/favicon.ico', (req, res) => res.sendStatus(204));
 
 // Start the server
-app.listen(3000, () => {
-  console.log('Server is up and running at port 3000.');
+const PORT = process.env.PORT || 3000; // Use PORT from environment variables
+app.listen(PORT, () => {
+  console.log(`Server is up and running at port ${PORT}.`);
 });
